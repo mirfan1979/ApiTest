@@ -17,3 +17,22 @@ C:\Users\isd\Documents\Visual Studio 2015\Projects\TestAPI\TestAPI\TestAPI.Model
 C:\Users\isd\Documents\Visual Studio 2015\Projects\TestAPI\TestAPI\TestAPI.Models\bin\Debug\Dapper.xml
 C:\Users\isd\Documents\Visual Studio 2015\Projects\TestAPI\TestAPI\TestAPI.Models\bin\Debug\Google.Protobuf.xml
 C:\Users\isd\Documents\Visual Studio 2015\Projects\TestAPI\TestAPI\TestAPI.Models\bin\Debug\MySql.Data.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\TestAPI.Models.dll.config
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\TestAPI.Models.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\TestAPI.Models.pdb
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Dapper.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Google.Protobuf.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\JWT.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\MySql.Data.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\QueryBuilder.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\SqlKata.Execution.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Dapper.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Google.Protobuf.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\JWT.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\MySql.Data.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\obj\Debug\TestAPI.Models.csprojResolveAssemblyReference.cache
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\obj\Debug\TestAPI.Models.dll
+C:\Users\Hp\Source\Repos\ApiTest\TestAPI.Models\obj\Debug\TestAPI.Models.pdb

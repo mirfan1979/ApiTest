@@ -17,7 +17,9 @@ namespace TestAPI.Models
             //var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
 
             // Setup the connection and compiler
-            var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var conn = "Database =hrms; Data Source = localhost; User Id = root; Password = gsmgms12";
+            // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var connection = new MySqlConnection(conn);
             var compiler = new MySqlCompiler(); 
             var db = new QueryFactory(connection, compiler);
 
@@ -26,7 +28,7 @@ namespace TestAPI.Models
             try
             {
                 // You can register the QueryFactory in the IoC container
-                var response = db.Query("jpadmin").Get();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
+                var response = db.Query("jobtype").Get();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
                 bool hasData = (response != null) ? true : false;
                 successResponseModel = new SuccessResponse(response, hasData);
             }
@@ -45,7 +47,11 @@ namespace TestAPI.Models
             var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
 
             // Setup the connection and compiler
-            var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var conn = "Database =hrms; Data Source = localhost; User Id = root; Password = gsmgms12";
+            // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var connection = new MySqlConnection(conn);
+
             var compiler = new MySqlCompiler();
             var db = new QueryFactory(connection, compiler);
 
@@ -54,7 +60,7 @@ namespace TestAPI.Models
             try
             {
                 // You can register the QueryFactory in the IoC container
-                var response = db.Query("jpadmin").Insert(test);
+                var response = db.Query("jobtype").Insert(test);
                 bool hasData = true;//(response != null) ? true : false;
                 successResponseModel = new SuccessResponse(response, hasData);
             }
