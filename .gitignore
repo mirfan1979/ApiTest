@@ -3,3 +3,4 @@
 ################################################################################
 
 /.vs
+/TestAPI/obj/Debug/TestAPI.csprojAssemblyReference.cache
