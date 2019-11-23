@@ -47,6 +47,7 @@ namespace TestAPI.Controllers
             return response;
         }
 
+        //AR change 
         [Route("api")]
         public async Task<object> Post()
         {
@@ -104,12 +105,12 @@ namespace TestAPI.Controllers
         
         private object RouteToManager(RequestModel request)
         {
-            object requestValidate = ValidateRequest(request);
+            /*object requestValidate = ValidateRequest(request);
             if (requestValidate.GetType() == typeof(ErrorResponse))
             {
                 ErrorResponse error = (ErrorResponse)requestValidate;
                 return ApiFailure("{}", error.ErrorMessage, error.ErrorCode, "null");
-            }
+            }*/
 
             string projectName = "";
             string managerName = request.RequestMethod.Split('.').First();
