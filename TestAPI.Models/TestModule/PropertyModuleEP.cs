@@ -58,15 +58,25 @@ namespace TestAPI.Models
             try
             {
                 // You can register the QueryFactory in the IoC container
-             
+
                 //var response = db.Query("propertydetail").Select("propertyid", "propertytype").GroupBy("PropertyType").GroupBy("propertyid").Get();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
-                var dev4 = db.Query("propertydetail").Where("propertytype", 1).Limit(4);
+                /*var dev4 = db.Query("propertydetail").Where("propertytype", 1).Limit(4);
                 var rent4 = db.Query("propertydetail").Where("propertytype", 2).Limit(4);
 
                 var land4 = db.Query("propertydetail").Where("propertytype", 3).Limit(4);
                 var temp = dev4.UnionAll(rent4).UnionAll(land4);
-                var response = dev4.UnionAll(rent4).UnionAll(land4).Get();
+                var response = dev4.UnionAll(rent4).UnionAll(land4).Get();*/
 
+                string strRawQuery = @"
+                    (select * from propertydetail where propertytype = 1 limit 4)
+                    union all
+                    (select * from propertydetail where propertytype = 2 limit 4)
+                    union all
+                    (select * from propertydetail where propertytype = 3 limit 4)
+                ";
+
+                var response = db.Select(strRawQuery);
+                
                 bool hasData = (response != null) ? true : false;
                 successResponseModel = new SuccessResponse(response, hasData);
             }
