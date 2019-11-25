@@ -1,0 +1,179 @@
+Create Database PropertyInvestment;
+
+use PropertyInvestment;
+
+Create Table User (
+	UserID int(7) zerofill auto_increment,
+    FirstName varchar(25) not null, 
+    LastName varchar(25) not null, 
+    Email varchar(50)  not null,
+    UserName  varchar(50) unique not null, 
+    Passwrd   varchar (50) not null, 
+    RegistrationConfirmation bool not null ,
+	
+    primary key (UserID) 
+);
+
+
+Create Table RegisteredUser (
+	RegUserID int(7) zerofill auto_increment,
+    NICno int(13) not null, 
+    Nationality varchar(50) not null, 
+    Address varchar(200) not null, 
+    City varchar(50) not null, 
+    Country varchar(50) not null, 
+    Contact_No int(15) not null, 
+    Phone_No int(15) not null, 
+    NTN_No int(20) not null,
+    DateofBirth date not null,
+    Income varchar (30) not null, 
+    Document_SOE blob ,
+	UserID int(7) not null,	
+    primary key (RegUserID) 
+
+);
+
+create table PropertyDetail(
+	PropertyID int(7) zerofill auto_increment, 
+    PropertyName varchar(50) not null, 
+    Address varchar(100) not null, 
+    City varchar(50) not null, 
+    Country varchar(50) not null, 
+	PropertyType int(1) not null, 
+	Size int(17) not null,
+    sizeUnit varchar(10) not null, 
+    CommercialResidential int(2)  not null, 
+    Lattitude float(8) not null, 
+    Longitude float(8) not null, 
+    PropertyPics blob , 
+    PropertyVideos blob, 
+    PropertyPrice int(10) not null, 
+    Currency varchar(25) not null, 
+    PStatus varchar(10 ) not null, 
+    DisplayProperty bool not null, 
+    Documents blob , 
+    MinimumInvestmentAmount int (10) not null, 
+    CurrencyMIA varchar(25) not null, 
+    
+    MinimumInvestPeriod int (3) not null,
+    UnitMIP varchar(25) not null ,
+    
+    primary key (PropertyID) 
+);
+/* fk of property */
+create table PropertyShare(
+	PropShareID int(7) auto_increment, 
+    ShareBreak  float(2) not null,
+    TotalShareQuantity int(10) not null,
+    
+    PropertyID int(7) not null,
+	primary key (PropShareID)
+
+);
+
+create table UserShare (
+	UserShareID int(7) zerofill auto_increment,
+    ShareQty int(8) not null, 
+    ShareMarketValue int(8) not null ,
+    DateofInvestment date not null, 
+    ShareStatus varchar(10) not null, 
+    TotalAmount float(10) not null, 
+    PropertyID int(7) not null, 
+    RegUserID int(7) not null, 
+    
+    
+    primary key ( UserShareID) 
+
+
+);
+
+
+create table PaymetnReference (
+	PaymentID int(7)  zerofill auto_increment,
+    PaymentMethod varchar(10) not null, 
+    Amount float(10) not null, 
+    UserShareID int(7) not null,
+    
+    primary key ( PaymentID)
+);
+
+
+create table PropertyShareHold(
+	HoldID int(7) zerofill auto_increment,
+    ShareQty int(10) not null, 
+    DateofHold date not null, 
+    HoldBy varchar(20) ,
+	PropertyID int(7) not null, 
+	primary key(HoldID) 
+);
+
+
+create table RentalProperty (
+	RentalPropertyID int(7) zerofill auto_increment ,
+    RentedOn date not null, 
+    RentedTo varchar(25) not null, 
+    RentalContract blob not null, 
+    RentPerMonth int(8) not null, 
+    Rooms int(2) not null, 
+    AttachedBath int(2) not null,
+	PropertyID int(7) not null, 
+    
+ 	primary key(RentalPropertyID) 
+
+);
+
+
+create table Developmental (
+	StartDate date not null, 
+    EndDate date null, 
+    ValueonCompletion int (10) not null,
+    
+    PropertyID int(7) zerofill ,
+    
+    Primary key( PropertyID)
+
+);
+
+
+create table DevelopmentalPrediction (
+	PredictionID int(7) zerofill auto_increment, 
+    PredictionYear date not null, 
+    PredictedValue float(10) not null, 
+    CurrentValue float(10),
+    DateUpdate date not null, 
+    UpdatedBy varchar(25) not null, 
+    EvaluatedValue int(10) , 
+    PropertyID int(7) not null, 
+    primary key ( PredictionID) 
+
+
+);
+
+
+create table PropertyPrediction(
+	PredictionID int(7) zerofill auto_increment, 
+    PredictionYear date not null, 
+    PredictedValue float(10) not null, 
+	CurrentValue float(10), 
+    DateUpdate date not null, 
+    UpdatedBy varchar(25) not null, 
+    EvaluatedValue int(10) ,
+    PropertyID int(7) not null , 
+    primary key(PredictionID) 
+    
+    
+);
+
+alter table propertyshare add AvailableShares int(10);
+alter table propertydetail modify CurrencyMIA varchar(25);
+alter table propertydetail modify PropertyType varchar(2);
+alter table propertydetail modify CommercialResidential varchar(2);
+alter table propertydetail modify Longitude float(10);
+alter table propertydetail modify Lattitude float(10);
+alter table propertydetail modify DisplayProperty varchar(2);
+alter table rentalproperty add RentedTill date;
+alter table rentalproperty modify RentalContract blob;
+alter table propertyprediction modify DateUpdate datetime;
+
+
+
