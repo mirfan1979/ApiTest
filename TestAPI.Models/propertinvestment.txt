@@ -175,5 +175,14 @@ alter table rentalproperty add RentedTill date;
 alter table rentalproperty modify RentalContract blob;
 alter table propertyprediction modify DateUpdate datetime;
 
+create table ContactUs (
+	FormID int(7) zerofill auto_increment,
+    FullName varchar(25) not null, 
+    Phone varchar(15) not null, 
+    MessageSubject varchar(100) not null, 
+    MessageText mediumtext not null,
+    
+    primary key ( FormID) 
 
+);
 
