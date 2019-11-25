@@ -143,16 +143,15 @@ namespace TestAPI.Models.Utility
 
         public class DDList
         {
-            public DDList(string Text, string Value)
+            public DDList(string Text, object Value)
             {
                 this.Text = Text;
                 this.Value = Value;
             }
             public string Text { get; set; }
-            public string Value { get; set; }
+            public object Value { get; set; }
             public bool isSelected { get; set; }
         }
-
         
         public static List<DDList> getPropertyType()
         {
@@ -163,15 +162,14 @@ namespace TestAPI.Models.Utility
                 { new DDList("Land", "L") }
             };
         }
-
         
         public static List<DDList> getSizeUnit()
         {
             return new List<DDList>()
             {{ new DDList("--Select size unit--", "") },
-                { new DDList("Square Yards", "sqyd") },
-                { new DDList("Square foot", "sqft") },
-                { new DDList("Land", "L") }
+                { new DDList("Square Yards", "SQYD") },
+                { new DDList("Square foot", "SQFT") },
+                { new DDList("Land", "LAND") }
             };
         }
         
@@ -183,6 +181,7 @@ namespace TestAPI.Models.Utility
                 { new DDList("No", "N") }  
             };
         }
+
         public static List<DDList> getCommercialResidential()
         {
             return new List<DDList>()
@@ -191,6 +190,7 @@ namespace TestAPI.Models.Utility
                 { new DDList("Residential", "R") }
             };
         }
+
         public static List<DDList> getPropertyStatus()
         {
             return new List<DDList>()
@@ -201,6 +201,7 @@ namespace TestAPI.Models.Utility
                 { new DDList("Sold", "S") },
             };
         }
+
         public static List<DDList> getTimeUnit()
         {
             return new List<DDList>()
@@ -209,34 +210,20 @@ namespace TestAPI.Models.Utility
                 { new DDList("Month", "M") }
             };
         }
-
-
-        public class DDListfloat 
+        
+        public static List<DDList> getShareBreak()
         {
-            public DDListfloat(string Text, double Value)
+            return new List<DDList>()
             {
-                this.Text = Text;
-                this.Value =Value ;
-            }
-            public string Text { get; set; }
-            public double Value { get; set; }
-            public bool isSelected { get; set; }
-        }
-        public static List<DDListfloat> getShareBreak()
-        {
-            return new List<DDListfloat>()
-            { { new DDListfloat("--Select option--", 0) },
-                { new DDListfloat("0.1", 0.1) },
-                { new DDListfloat("0.2", 0.2) },
-                { new DDListfloat("0.3", 0.3) },
-                { new DDListfloat("0.4", 0.4) },
-                { new DDListfloat("0.5", 0.5) }
-
-
+                { new DDList("--Select option--", 0) },
+                { new DDList("0.1", 0.1) },
+                { new DDList("0.2", 0.2) },
+                { new DDList("0.3", 0.3) },
+                { new DDList("0.4", 0.4) },
+                { new DDList("0.5", 0.5) }
             };
         }
-
-
+        
         #endregion
 
 

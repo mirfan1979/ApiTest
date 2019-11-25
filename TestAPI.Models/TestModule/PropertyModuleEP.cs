@@ -92,8 +92,9 @@ namespace TestAPI.Models
 
         }
 
-        public static object AddNewProperty(RequestModel request)
+        public static object SaveAddNewProperty(RequestModel request)
         {
+            //validate form auth token
             var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
 
             object PropertyType;
@@ -241,6 +242,45 @@ namespace TestAPI.Models
             return successResponseModel;
             
         }
+
+        public static object GetAddNewProperty(RequestModel request)
+        {
+            //add forms auth token here
+            SuccessResponse successResponseModel = new SuccessResponse();
+
+            try
+            {
+                Dictionary<string, object> response = new Dictionary<string, object>()
+                {
+                    { "FormAuthToken", "encryptformauthtoken" },
+                    { "ddlPropertyType", Constants.getPropertyType() },
+                    { "ddlSizeUnits", Constants.getSizeUnit() },
+                    { "ddlIsCommercialOrResidential", Constants.getCommercialResidential() },
+                    { "ddlPropertyStatus", Constants.getPropertyStatus() },
+                    { "ddlShareBreak", Constants.getShareBreak() },
+                    { "ddlDisplayProperty", Constants.getYN() },
+                    { "ddlTimeUnit", Constants.getTimeUnit() }
+                };
+                successResponseModel = new SuccessResponse(response, true);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteErrorLog(ex);
+                return new ErrorResponse(ex.Message, HttpStatusCode.BadRequest);
+            }
+
+            return successResponseModel;
+
+        }
+
+        //(private) validate AddProperty save --function needs to be added
         
+        //(public) Edit Property Values (decide on which values should be editable)
+
+        //(public) Change property status
+
+        //(public) list all properties for Admin
+
+
     }
 }
