@@ -5,8 +5,10 @@ using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using TestAPI.Models.Utility;
+using System.Transactions;
 
 namespace TestAPI.Models
 {
@@ -79,13 +81,14 @@ namespace TestAPI.Models
             return successResponseModel;
 
         }
+
         public static object SaveDemoRecord(RequestModel request)
         {
             var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
 
             // Setup the connection and compiler
             // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
-            var conn = "Database =hrms; Data Source = localhost; User Id = root; Password = gsmgms12";
+            var conn = "Database =PropertyInvestment; Data Source = localhost; User Id = root; Password = gsmgms12";
             // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
             var connection = new MySqlConnection(conn);
 
@@ -97,7 +100,7 @@ namespace TestAPI.Models
             try
             {
                 // You can register the QueryFactory in the IoC container
-                var response = db.Query("jobtype").Insert(test);
+                var response = db.Query("propertydetail").Insert(test);
                 bool hasData = true;//(response != null) ? true : false;
                 successResponseModel = new SuccessResponse(response, hasData);
             }
@@ -108,7 +111,6 @@ namespace TestAPI.Models
             }
 
             return successResponseModel;
-
         }
     }
 }
