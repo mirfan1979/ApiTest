@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-
-using TestAPI.Models;
 using TestAPI.Models.Utility;
-
-using SqlKata;
 using SqlKata.Execution;
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using SqlKata.Compilers;
-using Newtonsoft.Json;
+using System.Web.Http.Cors;
+
 using static TestAPI.Models.Utility.Constants;
+using TestAPI.Models;
+using System.Reflection;
 
 namespace TestAPI.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
         // Mark: This method returns the success response block
@@ -51,8 +47,6 @@ namespace TestAPI.Controllers
         [Route("api")]
         public async Task<object> Post()
         {
-
-            
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -76,29 +70,6 @@ namespace TestAPI.Controllers
             List<string> fileList = new List<string>();
 
             List<FileModel> files = new List<FileModel>();
-            /*try
-            {
-                // Read the form data.
-                await Request.Content.ReadAsMultipartAsync(provider);
-
-                // This illustrates how to get the file names.
-                foreach (MultipartFileData file in provider.FileData)
-                {
-                    string fileName = file.Headers.ContentDisposition.FileName;
-                    string serverPath = file.LocalFileName;
-                    fileList.Add(Path.GetFileName(file.LocalFileName));
-
-                    FileModel fileModel = ModelHelper.ReadFile(serverPath);
-                    files.Add(fileModel);
-                }
-
-                RequestModel request = new RequestModel(requestMethod, requestData, requestDateTime, tokenHeader, files);
-                return null;//RouteToManager(request);
-            }
-            catch (Exception e)
-            {
-                return ApiFailure(e.Message, Constants.Failure, HttpStatusCode.BadRequest, requestMethod);
-            }*/
             RequestModel request = new RequestModel(requestMethod, requestData, requestDateTime, tokenHeader, files);
             return RouteToManager(request);
         }
@@ -117,14 +88,29 @@ namespace TestAPI.Controllers
             string methodName = request.RequestMethod.Split('.').Last();
             string projectNamespace = "";
 
-            Type typeProject = Type.GetType("TestAPI.Models."+ managerName + ",TestAPI.Models");//MPAPIConstants.ManagerNamespace + ".ProjectManager.ProjectManager," + MPAPIConstants.ManagerNamespace);
-
+            Type typeProject = Type.GetType("TestAPI.Models."+ managerName + ",TestAPI.Models");
+            
             if (typeProject == null)
             {
                 return ApiFailure("{}", string.Format("({0}) {1}", request.RequestMethod, Constants.MethodNotFound), HttpStatusCode.BadRequest, request.RequestMethod);
             }
 
-            //request.RequestMethod = managerName + "." + managerName;
+            //check claims
+            MethodBase method = typeProject.GetMethod(methodName);
+            var temp1 = method.GetCustomAttributes().ToList();
+            foreach(var attr in temp1)
+            {
+                var attrType = attr.GetType();
+                //var classObj = Activator.CreateInstance(attrType);
+                var classMethod = attrType.GetMethod("OnAuthorization");
+                object[] methodArguments = new[] { ActionContext };
+                classMethod.Invoke(attr, methodArguments);
+                if (ActionContext.Response != null)
+                {
+                    return ActionContext.Response;
+                }
+            }
+            
             object[] argumentsProjects = new[] { request };
             object responseDataProjects = typeProject.GetMethod(methodName).Invoke(null, argumentsProjects);
 
@@ -145,51 +131,10 @@ namespace TestAPI.Controllers
                     return responseDataProjects;
                 }
             }
-            //else if (responseData != null)
-            //{
-            //    return ApiSuccess(responseData, request.RequestMethod);
-            //}
             else
             {
                 return ApiFailure("{}", Constants.Failure, HttpStatusCode.BadRequest, methodName);
             }
-            /*
-            projectNamespace = projectName.Replace("." + projectName.Split('.').Last(), "");
-            Type type = Type.GetType(projectName + ", " + projectNamespace);
-            if (type == null)
-            {
-                return ApiFailure("{}", string.Format("({0}) {1}", methodName, Constants.MethodNotFound), HttpStatusCode.BadRequest, request.RequestMethod);
-            }
-
-            request.RequestMethod = projectName + "." + methodName;
-            object[] arguments = new[] { request };
-            object responseData = type.GetMethod("").Invoke(null, arguments);
-
-            if (responseData.GetType() == typeof(ErrorResponse))
-            {
-                ErrorResponse error = (ErrorResponse)responseData;
-                return ApiFailure("{}", error.ErrorMessage, error.ErrorCode, methodName);
-            }
-            else if (responseData.GetType() == typeof(SuccessResponse))
-            {
-                SuccessResponse response = (SuccessResponse)responseData;
-                if (request.IsPostRequest)
-                {
-                    return ApiSuccess(response.Data, methodName, response.ResponseMessage, response.ResponseCode);
-                }
-                else
-                {
-                    return responseData;
-                }
-            }
-            //else if (responseData != null)
-            //{
-            //    return ApiSuccess(responseData, request.RequestMethod);
-            //}
-            else
-            {
-                return ApiFailure("{}", Constants.Failure, HttpStatusCode.BadRequest, methodName);
-            }*/
         }
 
         private object ValidateRequest(RequestModel request)

@@ -35,6 +35,7 @@ namespace TestAPI.Models.Utility
         public const string JWTSecretKey = "GQDstcKsx0NHjPOuXOYg5MbeJ1XT0uFiwDVvVBrkMnM";
         public const string JWTSecretToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBY2Nlc3NEYXRlVGltZSI6NjM2ODYyNjYwNzMyMzIxMTU4LCJBcHBsaWNhdGlvbklEIjoiT05FVElNRVRPS0VOIiwiVG9rZW5OYXR1cmUiOiJOIiwiVG9rZW5OZWVkIjoiT25lVGltZVRva2VuQ2FsbCIsIlRva2VuS2V5IjoiMXFhejNlZGM1dGhuN3VqbTJ3ZGM0cmdiMGlodjc4Zng1ZXN6In0.vMtFFSEtO_CGIe5_y_jsCqcOk1SjAz7E8YY6ESbVadY";
         public const string JWTEmptyToken = "";
+        
         #endregion
 
         #region Value
@@ -137,95 +138,6 @@ namespace TestAPI.Models.Utility
         public const string Default_NoReportFoundMessage = "No report found.";
 
         #endregion
-
-
-        #region DDLs
-
-        public class DDList
-        {
-            public DDList(string Text, object Value)
-            {
-                this.Text = Text;
-                this.Value = Value;
-            }
-            public string Text { get; set; }
-            public object Value { get; set; }
-            public bool isSelected { get; set; }
-        }
         
-        public static List<DDList> getPropertyType()
-        {
-            return new List<DDList>()
-            {{ new DDList("--Select Property Type--", "") },
-                { new DDList("Developmental", "D") },
-                { new DDList("Rental", "R") },
-                { new DDList("Land", "L") }
-            };
-        }
-        
-        public static List<DDList> getSizeUnit()
-        {
-            return new List<DDList>()
-            {{ new DDList("--Select size unit--", "") },
-                { new DDList("Square Yards", "SQYD") },
-                { new DDList("Square foot", "SQFT") },
-                { new DDList("Land", "LAND") }
-            };
-        }
-        
-        public static List<DDList> getYN()
-        {
-            return new List<DDList>()
-            { { new DDList("--Select an option--", "") },
-                { new DDList("Yes", "Y") },
-                { new DDList("No", "N") }  
-            };
-        }
-
-        public static List<DDList> getCommercialResidential()
-        {
-            return new List<DDList>()
-            { { new DDList("--Select an option--", "") },
-                { new DDList("Commercial", "C") },
-                { new DDList("Residential", "R") }
-            };
-        }
-
-        public static List<DDList> getPropertyStatus()
-        {
-            return new List<DDList>()
-            { { new DDList("--Select an option--", "") },
-                { new DDList("On Hold", "H") },
-                { new DDList("Open", "O") },
-                { new DDList("Completed", "C") },
-                { new DDList("Sold", "S") },
-            };
-        }
-
-        public static List<DDList> getTimeUnit()
-        {
-            return new List<DDList>()
-            { { new DDList("--Select an option--", "") },
-                { new DDList("Year", "Y") },
-                { new DDList("Month", "M") }
-            };
-        }
-        
-        public static List<DDList> getShareBreak()
-        {
-            return new List<DDList>()
-            {
-                { new DDList("--Select option--", 0) },
-                { new DDList("0.1", 0.1) },
-                { new DDList("0.2", 0.2) },
-                { new DDList("0.3", 0.3) },
-                { new DDList("0.4", 0.4) },
-                { new DDList("0.5", 0.5) }
-            };
-        }
-        
-        #endregion
-
-
     }
 }
