@@ -30,5 +30,12 @@ namespace TestAPI.Models.Utility
                 }
             }
         }
+
+        public SuccessResponse(object data, HttpStatusCode responseCode, string responseMessage)
+        {
+            ResponseMessage = responseMessage;
+            ResponseCode = HttpStatusCode.NoContent;
+            Data = data;
+        }
     }
 }

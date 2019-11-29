@@ -200,3 +200,20 @@ create table  User_interested (
     primary key(UserInterestedID)
     
 ) ;
+alter table User change Passwrd  Password varchar(200);
+alter table User modify RegistrationConfirmation  varchar(1);
+create table Admin (
+	AdminID int(7) zerofill auto_increment,
+    AdmUserId varchar(25) not null, 
+    Password varchar(200) not null, 
+    AdmRole varchar(10) not null,
+    
+    primary key ( AdminID) 
+
+);
+
+alter table User add isVerified  varchar(1) not null;
+alter table RegisteredUser modify NICno  varchar(20) not null;
+alter table RegisteredUser modify NTN_No  varchar(20) not null;
+alter table RegisteredUser modify Contact_No  varchar(20) not null;
+alter table RegisteredUser modify Phone_No  varchar(20) not null;

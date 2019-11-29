@@ -15,6 +15,17 @@ namespace TestAPI
             //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             //RouteConfig.RegisterRoutes(RouteTable.Routes);
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
+        }
+
+        void Application_BeginRequest(Object source, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(TestAPI.Models.Utility.Constants.BaseUrl))
+            {
+                var app = (HttpApplication)source;
+                var uriObject = app.Context.Request.Url;
+                TestAPI.Models.Utility.Constants.BaseUrl = app.Context.Request.Url.OriginalString;
+            }
         }
     }
 }
