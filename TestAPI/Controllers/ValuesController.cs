@@ -97,6 +97,10 @@ namespace TestAPI.Controllers
 
             //check claims
             MethodBase method = typeProject.GetMethod(methodName);
+            if(method == null)
+            {
+                return ApiFailure("{}", string.Format("({0}) {1}", request.RequestMethod, Constants.MethodNotFound), HttpStatusCode.BadRequest, request.RequestMethod);
+            }
             var temp1 = method.GetCustomAttributes().ToList();
             foreach(var attr in temp1)
             {

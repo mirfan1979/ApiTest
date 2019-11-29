@@ -30,7 +30,7 @@ namespace TestAPI
             //Token Generations
             app.UseOAuthAuthorizationServer(options);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-
+            
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
 

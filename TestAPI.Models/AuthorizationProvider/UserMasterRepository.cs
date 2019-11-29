@@ -14,7 +14,9 @@ namespace TestAPI.Models
                 if (type == "USER")
                 {
                     string UserId = "";
-                    temp.TryGetValue("Email", out UserId);
+                    temp.TryGetValue("UserID", out UserId);
+                    string UserEmail = "";
+                    temp.TryGetValue("Email", out UserEmail);
                     string UserName = "";
                     temp.TryGetValue("UserName", out UserName);
                     string UserPassword = "";
@@ -23,6 +25,7 @@ namespace TestAPI.Models
                         UserId = UserId,
                         UserPassword = UserPassword,
                         UserName = UserName,
+                        UserEmail = UserEmail,
                         UserType = type,
                         UserRole = ""
                     };

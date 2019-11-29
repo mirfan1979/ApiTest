@@ -12,6 +12,7 @@ namespace TestAPI.Models
 
         public const string AppSecretKeyFormsAuth = "mCUHr0ZYTaQvCPiXocWnSqFtXFA";
         public const string AppSecretKeyPassword  = "mCUHr0ZYTaQvCPiXocWnSqFtXP";
+        public const string AppSecretLinkObject   = "mCUHr0ZYTaQvCPiXocWnSqFtXLO";
 
         #endregion
 

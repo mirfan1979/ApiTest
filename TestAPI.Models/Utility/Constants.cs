@@ -43,6 +43,8 @@ namespace TestAPI.Models.Utility
         public const string RequestMethodKey = "RequestMethod";
         public const string RequestDataKey = "RequestData";
         public const string RequestDateTimeKey = "RequestDateTime";
+
+        public static string BaseUrl { get; set; }
         #endregion
 
         #region Code

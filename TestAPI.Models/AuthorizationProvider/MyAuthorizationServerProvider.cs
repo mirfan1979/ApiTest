@@ -26,8 +26,12 @@ namespace TestAPI.Models
             identity.AddClaim(new Claim(ClaimTypes.Role, user.UserRole));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
             identity.AddClaim(new Claim("RoleType", user.UserType));
+            identity.AddClaim(new Claim("Email", user.UserEmail));
+            identity.AddClaim(new Claim("UserId", user.UserId));
             context.Validated(identity);
             
+            
+
         }
 
     }
