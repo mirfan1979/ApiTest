@@ -108,19 +108,19 @@ create table PropertyShareHold(
 );
 
 
-create table RentalProperty (
-	RentalPropertyID int(7) zerofill auto_increment ,
-    RentedOn date not null, 
-    RentedTo varchar(25) not null, 
-    RentalContract blob not null, 
-    RentPerMonth int(8) not null, 
-    Rooms int(2) not null, 
-    AttachedBath int(2) not null,
-	PropertyID int(7) not null, 
-    
- 	primary key(RentalPropertyID) 
+	create table RentalProperty (
+		RentalPropertyID int(7) zerofill auto_increment ,
+		RentedOn date not null, 
+		RentedTo varchar(25) not null, 
+		RentalContract blob not null, 
+		RentPerMonth int(8) not null, 
+		Rooms int(2) not null, 
+		AttachedBath int(2) not null,
+		PropertyID int(7) not null, 
+		RentedTill date not null,
+ 		primary key(RentalPropertyID) 
 
-);
+	);
 
 
 create table Developmental (
@@ -175,6 +175,9 @@ alter table rentalproperty add RentedTill date;
 alter table rentalproperty modify RentalContract blob;
 alter table propertyprediction modify DateUpdate datetime;
 
+
+
+//ahmed
 create table ContactUs (
 	FormID int(7) zerofill auto_increment,
     FullName varchar(25) not null, 
@@ -186,3 +189,14 @@ create table ContactUs (
 
 );
 
+
+
+create table  User_interested ( 
+	UserInterestedID int(7) zerofill  not null ,
+    UserID int(7) zerofill not null, 
+    PropertyID int(7) zerofill not null, 
+	LastfiledDatetime datetime not null, 
+    ValueOnCurrentDate float(10) not null,
+    primary key(UserInterestedID)
+    
+) ;

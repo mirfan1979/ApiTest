@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using TestAPI.Models.Utility;
 using System.Transactions;
+using System.Dynamic;
 
 namespace TestAPI.Models
 {
@@ -33,6 +34,56 @@ namespace TestAPI.Models
                 var response = db.Query("propertydetail").Get();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
                 bool hasData = (response != null) ? true : false;
                 successResponseModel = new SuccessResponse(response, hasData);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteErrorLog(ex);
+                return new ErrorResponse(ex.Message, HttpStatusCode.BadRequest);
+            }
+
+            return successResponseModel;
+
+        }
+        public static object GetAllPropertyDetails(RequestModel request)
+        {
+            //var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
+
+            // Setup the connection and compiler
+            var conn = "Database =PropertyInvestment; Data Source = localhost; User Id = root; Password = gsmgms12";
+            // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var connection = new MySqlConnection(conn);
+            var compiler = new MySqlCompiler();
+            var db = new QueryFactory(connection, compiler);
+
+            SuccessResponse successResponseModel = new SuccessResponse();
+
+            try
+            {
+                // You can register the QueryFactory in the IoC container
+                object response = db.Query("propertydetail").Get();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
+                
+                bool hasData = (response != null) ? true : false;
+                successResponseModel = new SuccessResponse(response, hasData);
+
+
+                 var strResponse = response.ToString().Replace("DapperRow,", "").Replace("=", ":").Replace("NULL", "''");
+
+                //  var jsonsettings = new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore };
+              List<  Dictionary<string, object> > templst =  JsonConvert.DeserializeObject <List<Dictionary<string, object>>>(strResponse);
+               
+
+                if (hasData)
+                {
+                    object _Propertytype;
+                    templst[0].TryGetValue("Propertytype", out _Propertytype);
+                    
+
+
+
+
+                }
+                
+
             }
             catch (Exception ex)
             {
@@ -241,6 +292,66 @@ namespace TestAPI.Models
             return successResponseModel;
             
         }
-        
+
+        public static object EditProperty(RequestModel request)
+        {
+             var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
+            object _PropertyID;
+            test.TryGetValue("PropertyID", out _PropertyID);
+            
+            // Setup the connection and compiler
+            var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+          
+
+            var compiler = new MySqlCompiler();
+            var db = new QueryFactory(connection, compiler);
+
+            SuccessResponse successResponseModel = new SuccessResponse();
+
+            try
+            {
+                // You can register the QueryFactory in the IoC container
+                object response = db.Query("propertydetail")
+                    .Select("PropertyPics","PropertyVideos", "PStatus" , "DisplayProperty", "Documents", 
+                    "MinimumInvestmentAmount", "MinimumInvestPeriod")
+                    .Where("PropertyID",_PropertyID).Get().First();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
+                var strResponse = response.ToString().Replace("DapperRow,", "").Replace("=", ":").Replace("NULL","''");
+
+            //  var jsonsettings = new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore };
+              Dictionary<string, object> temp = JsonConvert.DeserializeObject<Dictionary<string, object >>(strResponse);
+                
+
+                //object 
+                  //  response.
+                bool hasData = (response != null) ? true : false;
+            /*    if (hasData)
+                {    
+                    object _PropertyPics;
+                    temp.TryGetValue("PropertyPics", out _PropertyPics);
+                    object _PropertyVideos;
+                    temp.TryGetValue("PropertyVideos", out _PropertyVideos);
+                    object _PropertyStatus;
+                    temp.TryGetValue("PStatus", out _PropertyStatus);
+                    object _displayproperty;
+                    temp.TryGetValue("DisplayProperty", out _displayproperty);
+                    object _Documents;
+                    temp.TryGetValue("Documents", out _Documents);
+                    object 
+                
+
+
+                }*/  
+                successResponseModel = new SuccessResponse(response, hasData);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteErrorLog(ex);
+                return new ErrorResponse(ex.Message, HttpStatusCode.BadRequest);
+            }
+
+            return successResponseModel;
+
+
+        }
     }
 }
