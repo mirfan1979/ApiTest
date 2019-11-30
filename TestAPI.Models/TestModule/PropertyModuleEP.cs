@@ -7,9 +7,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+
+
 using TestAPI.Models.Utility;
-using System.Transactions;
-using System.Dynamic;
+
 
 namespace TestAPI.Models
 {
@@ -57,10 +58,6 @@ namespace TestAPI.Models
         {
             // Setup the connection and compiler
             var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
-            // conn = "Database =hrms; Data Source = localhost; User Id = root; Password = gsmgms12";
-            // var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
-            //var connection = new MySqlConnection(conn);
-
             var compiler = new MySqlCompiler();
             var db = new QueryFactory(connection, compiler);
 
@@ -202,10 +199,77 @@ namespace TestAPI.Models
             return successResponseModel;
             
         }
-
-        public static object EditProperty(RequestModel request)
+        public static object GetPropertyByID(RequestModel request)
         {
-             var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
+            var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
+            object _PropertyID;
+            test.TryGetValue("PropertyID", out _PropertyID);
+
+            // Setup the connection and compiler
+            var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+
+
+            var compiler = new MySqlCompiler();
+            var db = new QueryFactory(connection, compiler);
+
+            SuccessResponse successResponseModel = new SuccessResponse();
+
+            try
+            {
+                // You can register the QueryFactory in the IoC container
+                IEnumerable<IDictionary<string, object>> response;
+                response = db.Query("propertydetail")
+                    .Where("PropertyID", _PropertyID)
+                    .Get()
+                    .Cast<IDictionary<string, object>>();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
+
+                bool hasData = (response != null) ? true : false;
+                if (hasData)
+                {
+
+                    foreach (var row in response)
+                    {
+                        var _PropertyType = row["PropertyType"];
+                        if ((_PropertyType.ToString() == "D"))
+                        {
+                            object response_dev = db.Query("developmental").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                            row.Add("developmental", response_dev);
+                            object response_dev_pred = db.Query("developmentalprediction").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                            row.Add("developmentalprediction", response_dev_pred);
+
+                        }
+                        else if ((_PropertyType.ToString() == "R"))
+                        {
+                            object response_rent = db.Query("rentalproperty").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                            row.Add("rental", response_rent);
+                            
+
+                        }
+                       
+                            object response_pred = db.Query("propertyprediction").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                            row.Add("propertyprediction", response_pred);
+
+                        
+
+                    }
+
+                }
+
+                successResponseModel = new SuccessResponse(response, hasData);
+            }
+            catch (Exception ex)
+            {
+                //Logger.WriteErrorLog(ex);
+                return new ErrorResponse(ex.Message, HttpStatusCode.BadRequest);
+            }
+
+            return successResponseModel;
+
+
+        }
+        public static object GetPropertyEditableByID(RequestModel request)
+        {
+            var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
             object _PropertyID;
             test.TryGetValue("PropertyID", out _PropertyID);
             
@@ -221,36 +285,46 @@ namespace TestAPI.Models
             try
             {
                 // You can register the QueryFactory in the IoC container
-                object response = db.Query("propertydetail")
-                    .Select("PropertyPics","PropertyVideos", "PStatus" , "DisplayProperty", "Documents", 
-                    "MinimumInvestmentAmount", "MinimumInvestPeriod")
-                    .Where("PropertyID",_PropertyID).Get().First();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
-                var strResponse = response.ToString().Replace("DapperRow,", "").Replace("=", ":").Replace("NULL","''");
+                IEnumerable<IDictionary<string, object>> response;
+                response = db.Query("propertydetail")
+                    .Select("PropertyID","PropertyPics","PropertyVideos", "PStatus" , "DisplayProperty", "Documents", 
+                    "MinimumInvestmentAmount", "PropertyType")
+                    .Where("PropertyID",_PropertyID )
+                    .Get()
+                    .Cast<IDictionary<string, object>>();  //db.Query("jpexperience").Where("ExpId", 6).Where("ProfileId", 4).First();
 
-            //  var jsonsettings = new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore };
-              Dictionary<string, object> temp = JsonConvert.DeserializeObject<Dictionary<string, object >>(strResponse);
-                
+               bool hasData = (response != null) ? true : false;
+                 if (hasData)
+                 {
 
-                //object 
-                  //  response.
-                bool hasData = (response != null) ? true : false;
-            /*    if (hasData)
-                {    
-                    object _PropertyPics;
-                    temp.TryGetValue("PropertyPics", out _PropertyPics);
-                    object _PropertyVideos;
-                    temp.TryGetValue("PropertyVideos", out _PropertyVideos);
-                    object _PropertyStatus;
-                    temp.TryGetValue("PStatus", out _PropertyStatus);
-                    object _displayproperty;
-                    temp.TryGetValue("DisplayProperty", out _displayproperty);
-                    object _Documents;
-                    temp.TryGetValue("Documents", out _Documents);
-                    object 
-                
+                    foreach (var row in response)
+                    {
+                        var _PropertyType = row["PropertyType"]; 
+                        if ((_PropertyType.ToString() == "D") )
+                          {
+                              object response_dev = db.Query("developmental").Where("PropertyID",_PropertyID).Get().Cast<IDictionary<string, object>>();
+                              row.Add("developmental", response_dev);
+                              object response_dev_pred = db.Query("developmentalprediction").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                              row.Add("developmentalprediction", response_dev_pred);
 
+                        }
+                        else if ((_PropertyType.ToString() == "R") )
+                        {
+                            object response_rent = db.Query("rentalproperty").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                            row.Add("RentalProperty", response_rent);
+                          
 
-                }*/  
+                        }
+                       
+                         object response_pred = db.Query("propertyprediction").Where("PropertyID", _PropertyID).Get().Cast<IDictionary<string, object>>();
+                         row.Add("propertyprediction", response_pred);
+
+                        
+                       
+                    }
+
+                 }
+                 
                 successResponseModel = new SuccessResponse(response, hasData);
             }
             catch (Exception ex)
@@ -262,6 +336,183 @@ namespace TestAPI.Models
             return successResponseModel;
 
 
+        }
+
+        public static object EditProperty(RequestModel request)
+        {
+            var connection = new MySqlConnection(ConfigurationManager.AppSettings["MySqlDBConn"].ToString());
+            var compiler = new MySqlCompiler();
+            var db = new QueryFactory(connection, compiler);
+
+            SuccessResponse successResponseModel = new SuccessResponse();
+            db.Connection.Open();
+            using (var scope = db.Connection.BeginTransaction())
+            {
+                try
+                {
+                    var test = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(Convert.ToString(request.RequestData));
+                    object PropertyID;
+                    test.TryGetValue("PropertyID", out PropertyID);
+                    int _PropertyID = Convert.ToInt32(PropertyID);
+
+                    object PropertyType;
+                    test.TryGetValue("PropertyType", out PropertyType);
+                    string _PropertyType = PropertyType.ToString();
+                    test.Remove("PropertyType");
+                    object PropertyPics;
+                    test.TryGetValue("PropertyPics", out PropertyPics);
+                    List<string> _PropertyPics = PropertyPics as List<string>;
+                    test.Remove("PropertyPics");
+                    if (_PropertyPics != null && _PropertyPics.Count > 0)
+                    {
+                        //convert and add key    
+                    }
+
+                    object PropertyVideos;
+                    test.TryGetValue("PropertyVideos", out PropertyVideos);
+                    List<string> _PropertyVideos = PropertyVideos as List<string>;
+                    test.Remove("PropertyVideos");
+                    if (_PropertyVideos != null && _PropertyVideos.Count > 0)
+                    {
+                        //convert and add key    
+                    }
+
+                    object Documents;
+                    test.TryGetValue("Documents", out Documents);
+                    List<string> _Documents = Documents as List<string>;
+                    test.Remove("Documents");
+                    if (_Documents != null && _Documents.Count > 0)
+                    {
+                        //convert and add key    
+                    }
+                    if (_PropertyType== "D")
+                    {
+                        object _Developmental;
+                        test.TryGetValue("Developmental", out _Developmental);
+                        test.Remove("Developmental");
+                        Dictionary<string, object> DevelopmentalProperty = JsonConvert
+                                           .DeserializeObject<Dictionary
+                                           <string, object>>(_Developmental.ToString());
+                       
+
+                        if (DevelopmentalProperty != null)
+                        {
+
+                            //foreach (var dev in DevelopmentalProperty)
+                            //{
+                            DevelopmentalProperty.Add("PropertyID", _PropertyID);
+                                  
+                            var resdevprop = db.Query("developmental").Where("PropertyID", _PropertyID).Update(DevelopmentalProperty);
+                           // }
+
+
+                        }
+                        object DevelopmentalPrediction;
+                        test.TryGetValue("DevelopmentalPrediction", out DevelopmentalPrediction);
+                        test.Remove("DevelopmentalPrediction");
+                        List<Dictionary<string, object>> _DevelopmentalPrediction = JsonConvert
+                                           .DeserializeObject<List<Dictionary
+                                           <string, object>>>(DevelopmentalPrediction.ToString());
+
+                        if (_DevelopmentalPrediction != null)
+                        {
+                            foreach (var pd in _DevelopmentalPrediction)
+                            {
+                                object _PredictionID;
+                                pd.TryGetValue("PredictionID", out _PredictionID);
+                                if (_PredictionID == null)
+                                {
+                                    pd.Add("PropertyID", _PropertyID);
+                                    var resPdRN = db.Query("developmentalprediction").Insert(pd);
+                                }
+
+                            }
+
+                        }
+
+
+                    }
+                    else if (_PropertyType== "R")
+                    {
+                        object RentalProperty;
+                        test.TryGetValue("RentalProperty", out RentalProperty);
+                        test.Remove("RentalProperty");
+                        List<Dictionary<string, object>> _RentalProperty = JsonConvert
+                                            .DeserializeObject<List<Dictionary
+                                            <string, object>>>(RentalProperty.ToString());
+                        if (_RentalProperty != null)
+                        {   
+
+                            foreach (var ren in _RentalProperty)
+                            {
+                                object _RentalPropertyid;
+                                ren.TryGetValue("RentalPropertyID", out _RentalPropertyid);
+                                if(_RentalPropertyid==null)
+                                {
+                                    object RentalContract;
+                                    ren.TryGetValue("RentalContract", out RentalContract);
+                                    List<string> _RentalContract = RentalContract as List<string>;
+                                    ren.Remove("RentalContract");
+                                    if (_RentalContract != null && _RentalContract.Count > 0)
+                                    {
+                                        //convert and add key    
+                                    }
+                                    ren.Add("PropertyID", _PropertyID);
+                                    var resRental = db.Query("RentalProperty").Insert(ren);
+                                }
+
+
+                            }
+                            
+                            
+                        }
+                        
+
+
+                    }
+                    object PropertyPrediction;
+                    test.TryGetValue("PropertyPrediction", out PropertyPrediction);
+                    test.Remove("PropertyPrediction");
+                    List<Dictionary<string, object>> PredictionRentalProperty = JsonConvert
+                                        .DeserializeObject<List<Dictionary
+                                        <string, object>>>(PropertyPrediction.ToString());
+                    if (PredictionRentalProperty != null)
+                    {
+                        foreach (var pd in PredictionRentalProperty)
+                        {
+                            object _PredictionID;
+                            pd.TryGetValue("PredictionID", out _PredictionID);
+                            if (_PredictionID == null)
+                            {
+                                pd.Add("PropertyID", _PropertyID);
+                                var resPdRN = db.Query("propertyprediction").Insert(pd);
+                            }
+
+                        }
+
+                    }
+
+
+
+
+                    var query = db.Query("propertydetail").Where("PropertyID", _PropertyID).Update(test);
+
+
+                    bool hasData = true;//(response != null) ? true : false;
+                    scope.Commit();
+                    successResponseModel = new SuccessResponse("", hasData, "Record Edited");
+
+                }
+                catch (Exception ex)
+                {
+                    scope.Rollback();
+                    return new ErrorResponse(ex.Message, HttpStatusCode.BadRequest);
+                }
+
+                return successResponseModel;
+
+
+            }
         }
     }
 }
