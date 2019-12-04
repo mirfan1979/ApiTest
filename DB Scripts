@@ -1,0 +1,158 @@
+CREATE TABLE [dbo].[lawyer](	
+	[SNo] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[ RegNo]  [varchar](30) NULL,
+	[Name]  [varchar](15) NULL,
+	[Designation]  [varchar](20) NULL,
+	[Active]  [varchar](1) NULL,
+	[ContactNo]  [numeric](18, 0) NULL,
+	[Email]  [varchar](30) NULL,
+	[OfficeNo]  [numeric](18, 0) NULL,
+	[OfficeAddress]  [varchar](100) NULL,
+	[Province]  [varchar](30) NULL,
+	[Distic]  [varchar](50) NULL,
+	[Tehsel]  [varchar](50) NULL,
+	[Remainder]  [varchar](1) NULL,
+	[CaseAllowetoClient]  [varchar](1) NULL,
+	[DefualtCaseRemainder]  [varchar](1) NULL,
+	[BookingCaseType]  [varchar](20) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[RequestForLoging](	
+	[SNo] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[RegNo]  [varchar](30) NULL,
+	[Name]  [varchar](30) NULL,
+	[Designation]  [varchar](30) NULL,
+	[ContactNo]  [varchar](30) NULL,
+	[Email]  [varchar](30) NULL,
+	[Province]  [varchar](30) NULL,
+	[Distic]  [varchar](30) NULL,
+	[Tehsel]  [varchar](30) NULL,
+	[PaymentRefNo]  [varchar](30) NULL,
+	[PaymentDate]  [datetime] NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[ReActiveRequest](	
+	[S.No] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[RegNo]  [varchar](30) NULL,
+	[PaymentRefNo]  [varchar](30) NULL,
+	[PaymentDate]  [datetime] NULL,
+	[RequestDate]  [datetime] NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[Status](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[StatusID]  [varchar](20) NULL,
+	[Active]  [varchar](1) NULL,
+	[Description]  [varchar](50) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[justice](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[JusticeID]  [varchar](30) NULL,
+	[Active]  [varchar](1) NULL,
+	[justiceName]  [varchar](50) NULL,
+	[Designation]  [varchar](50) NULL,
+	[justiceContact]  [varchar](30) NULL,
+	[justiceBarcouncel]  [varchar](30) NULL,
+	[Province]  [varchar](30) NULL,
+	[Tehsel]  [varchar](30) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+	
+CREATE TABLE [dbo].[CaseType](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[CaseType]  [varchar](20) NULL,
+	[Title]  [varchar](50) NULL,
+	[Active]  [varchar](1) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[Client](	
+	[S.No] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[NIC]  [varchar](20) NULL,
+	[Name]  [varchar](50) NULL,
+	[ContactNo]  [varchar](30) NULL,
+	[SeconderyContNo]  [varchar](30) NULL,
+	[WhatsappNo]  [varchar](30) NULL,
+	[Email]  [varchar](30) NULL,
+	[Address]  [varchar](150) NULL,
+	[Province]  [varchar](30) NULL,
+	[Tehsel]  [varchar](30) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+CREATE TABLE [dbo].[Cases](	
+	[CaseNo] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[CaseTitle]  [varchar](50) NULL,
+	[Status]  [varchar](20) NULL,
+	[LawyerID]  [varchar](30) NULL,
+	[ClientNIC]  [varchar](20) NULL,
+	[CaseType]  [varchar](30) NULL,
+	[OnBehalf]  [varchar](50) NULL,
+	[CourtNo]  [varchar](30) NULL,
+	[JusticeID]  [varchar](30) NULL,
+	[CaseYear]  [datetime] NULL,
+	[CaseRefNo]  [varchar](30) NULL,
+	[CaseRemanderLawyer]  [varchar](1) NULL,
+	[CaseRemanderClient]  [varchar](1) NULL,
+	[ShowCasetoClient]  [varchar](1) NULL,
+	[CaseCharges]  [numeric](18, 0) NULL,
+	[Remarks]  [varchar](1000) NULL,
+	[Province]  [varchar](30) NULL,
+	[Tehsel]  [varchar](30) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+	
+	
+CREATE TABLE [dbo].[CaseDetailsTable](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[CaseNo]  [numeric](18, 0) NULL,
+	[Status]  [varchar](20) NULL,
+	[TxnNo]  [numeric](18, 0) NULL,
+	[NextDate]  [datetime] NULL,
+	[Remarks]  [varchar](1000) NULL,
+	[CourtNo]  [varchar](30) NULL,
+	[JusticeID]  [varchar](30) NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+	
+	
+CREATE TABLE [dbo].[CaseAmount](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[CaseNo]  [varchar](30) NULL,
+	[TxnNo]  [numeric](18, 0) NULL,
+	[Payment]  [numeric](18, 0) NULL,
+	[PaymentDate]  [datetime] NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
+	
+	
+	
+	
+	
+CREATE TABLE [dbo].[PaymentSch](	
+	[Sno] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[CaseNo]  [varchar](30) NULL,
+	[TxnNo]  [numeric](18, 0) NULL,
+	[Payment]  [numeric](18, 0) NULL,
+	[PaymentDate]  [datetime] NULL,
+	[LastFileDatetime]  [datetime] NULL,
+	[LastUser]  [varchar](30) NULL,
+) ON [PRIMARY]	
