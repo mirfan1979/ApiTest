@@ -188,6 +188,8 @@ create table ContactUs (
     primary key ( FormID) 
 
 );
+alter table contactus add email varchar (100);
+alter table contactus modify email varchar (100) not null;
 
 
 
